@@ -14,8 +14,8 @@ This is a chat application built using [GunDB](https://gun.eco/), a graph databa
    ```bash
    git clone https://github.com/Anas-github-acc/gunDB-chatApp.git
    cd gunDB-chatApp
-   npm install
-   npm run dev
+   pnpm install
+   pnpm run dev
    ```
 
 ## Contributing
