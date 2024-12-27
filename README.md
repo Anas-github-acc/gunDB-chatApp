@@ -5,7 +5,7 @@ This is a chat application built using [GunDB](https://gun.eco/), a graph databa
 ## Features
 - Decentralized & Real-time chat functionality
 - End-to-end encryption with [SEA](https://gun.eco/docs/SEA)
-- Lightweight and fast UI with [Svelte 50](https://svelte.dev/docs/svelte/v5-migration-guide#Migration-script)
+- Lightweight and fast UI with [Svelte 5](https://svelte.dev/docs/svelte/v5-migration-guide#Migration-script)
 
 ## Try
 [Live Demo]()
