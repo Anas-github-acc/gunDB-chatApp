@@ -29,11 +29,11 @@
     lastScrollTop = e.target.scrollTop;
   }
 
-  let debouncedWatchScroll = $state(null);
+  let debouncedWatchScroll = debounce(watchScroll, 1000);
 
-  $effect(() => {
-    debouncedWatchScroll = debounce(watchScroll, 1000);
-  });
+  // $effect(() => {
+  //   debouncedWatchScroll = debounce(watchScroll, 1000);
+  // });
 
   onMount(() => {
     var match = {
@@ -44,18 +44,19 @@
       },
       '-': 1, // filter in reverse
     };
-
+    
     db.get('chat').map(match)
-      .on(async (msg, id) => {
-        if(msg) {
+      .once(async (msg, id) => { 
+        if(msg && msg.what) {
           const key = '123#';
-
+          
           var message = {
             who: await db.user(msg).get('alias').then(), // a user might lie who they are! So let the user system detect whose data it is
             what: await SEA.decrypt(msg.what, key) + '', // force decryption to string
             when: GUN.state.is(msg, 'what'), // we can use GUN's state to detect metadata
           }
-
+          
+          // console.log('message - ', message);
           // console.log('message - ');
           // console.log(message);
 
@@ -94,8 +95,8 @@
 
 <div class="container">
   {#if $loggedIn}
-    <main >
-      {#each messages as message (message.when)}
+    <main onscroll="{debouncedWatchScroll}">
+      {#each messages as message } <!--we are not using any key here -->
         <ChatBox {message} sender={$username} />
       {/each}
 

@@ -12,14 +12,15 @@
   //   console.log(message);
   // });
 
-  console.log(message);
+  // console.log(message);
+
 
 </script>
 
 <div class={`message ${messageClass}`}>
-  <img src={avatar} alt="avatar" /> 
+  <img src={avatar} alt="avatar" />
   <div class="message-text">
-    <p>{message.what}</p>
+    <p on>{message.what}</p>
 
     <time>{time.toLocaleTimeString}</time>
   </div>
