@@ -6,12 +6,15 @@
   import debounce from 'lodash.debounce';
 
   import GUN from 'gun';
+  import SEA from 'gun/sea';
 
   // const db = new GUN('https://gunjs-chat.herokuapp.com/gun');
-  const db = new GUN();
+  const db = GUN();
 
   let newMsg = $state('');
   let messages = $state([]);
+
+  let hello = $state(0);
 
 
   let scrollBottom = $state(null);
@@ -35,25 +38,27 @@
   //   debouncedWatchScroll = debounce(watchScroll, 1000);
   // });
 
-  onMount(() => {
+  onMount(async () => {
     var match = {
       // lexical queries are kind of like a limited RegEx or Glob.
       '.': {
         // property selector
-        '>': new Date(+new Date() - 1 * 1000 * 60 * 60 * 3).toISOString(), // find any indexed property larger ~3 hours ago
+        '>': new Date(+new Date() - 1 * 1000 * 60 * 60 * 10).toISOString(), // find any indexed property larger ~3 hours ago
       },
       '-': 1, // filter in reverse
     };
-    
-    db.get('chat').map(match)
-      .once(async (msg, id) => { 
-        if(msg && msg.what) {
+
+    db.get('chat')
+      .map(match)
+      .once(async function(data, id) {
+        // console.log('data - ', data);
+        if(data) {
           const key = '123#';
           
           var message = {
-            who: await db.user(msg).get('alias').then(), // a user might lie who they are! So let the user system detect whose data it is
-            what: await SEA.decrypt(msg.what, key) + '', // force decryption to string
-            when: GUN.state.is(msg, 'what'), // we can use GUN's state to detect metadata
+            who: await db.user(data).get('alias'), // a user might lie who they are! So let the user system detect whose data it is
+            what: await SEA.decrypt(data.what, key) + '', // force decryption to string
+            when: GUN.state.is(data, 'what'), // we can use GUN's state to detect metadata
           }
           
           // console.log('message - ', message);
@@ -77,14 +82,19 @@
     event.preventDefault()
     const encrypted = await SEA.encrypt(newMsg, '123#');
 
-    const message = user.get('all').set({ what: encrypted});
+    const message = await user.get('all').set({ what: encrypted});
 
     const index = new Date().toISOString();
+    // db.get('chat').set({ [index]: message });
     db.get('chat').get(index).put(message);
+
+    console.log('message - ', index);
 
     // const emsg = await db.get('chat').get(message).get('what').then();
     // const msgd = await SEA.decrypt(emsg, '$123');
     // console.log(msgd);
+
+    hello = hello + 1;
 
     newMsg = '';
     canAutoScroll = true;
@@ -100,9 +110,11 @@
         <ChatBox {message} sender={$username} />
       {/each}
 
+      
       <div class="dummy" bind:this={scrollBottom}></div>
     </main>
-
+    
+    <h1>{hello}</h1>
     <form onsubmit={sendMessage}>
       <input type="text" placeholder="Type a message..." bind:value={newMsg} maxlength="100" />
 

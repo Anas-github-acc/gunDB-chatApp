@@ -1,27 +1,31 @@
 <script>
-  export let message;
-  export let sender;
+    import { onMount } from "svelte";
+    
+  const { message, sender } = $props();
 
-  const messageClass = message.who == sender ? 'sent' : 'recieved';
+  let messageClass = $state('');
+  let avatar = $state('https://api.dicebear.com/9.x/adventurer-neutral/svg?seed=seed');
+  let time = $state(new Date());
 
-  const avatar = `https://api.dicebear.com/9.x/adventurer-neutral/svg?seed=${message.who}`;
-
-  const time = new Date(message.when);
-
-  // $effect(() => {
-  //   console.log(message);
-  // });
-
-  // console.log(message);
-
+  onMount(() => {
+    $effect.pre(() => {
+      messageClass = message.who == sender ? 'sent' : 'recieved';
+      avatar = `https://api.dicebear.com/9.x/adventurer-neutral/svg?seed=${message.who}`;
+      time = new Date(message.when);
+    })
+  });
 
 </script>
 
 <div class={`message ${messageClass}`}>
   <img src={avatar} alt="avatar" />
-  <div class="message-text">
-    <p on>{message.what}</p>
-
-    <time>{time.toLocaleTimeString}</time>
+  <div>
+    <div class="message-text">
+      <div class="message-owner">
+        <span>{message.who}</span>
+      </div>
+      <p>{message.what}</p>
+      <time>{time.toLocaleDateString()} -- {time.toLocaleTimeString()}</time>
+    </div>
   </div>
 </div>

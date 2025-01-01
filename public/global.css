@@ -1,3 +1,20 @@
+:root {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #242424;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ------------------- */
+
 html, body {
 	position: relative;
 	width: 100%;
@@ -169,15 +186,17 @@ header {
   p {
 	max-width: 500px;
 	margin-bottom: 0;
+	margin-top: 0;
 	line-height: 24px;
 	padding: 10px 20px;
-	border-radius: 25px;
+	border-radius: 5px;
 	position: relative;
 	color: white;
 	text-align: center;
   }
   
   .message {
+	padding-top: 20px;
 	display: flex;
 	align-items: center;
 	margin: 0;
@@ -186,20 +205,31 @@ header {
   
   
   .sent {
+	text-align: right;
 	flex-direction: row-reverse;
   }
   
-  .sent p {
-	color: white;
-	background: #0b93f6;
-	align-self: flex-end;
-	text-align: right;
+  .sent .message-text p {
+		color: white;
+		background: #0b93f6;
+		align-self: flex-end;
   }
+
   .received p {
-	background: #e5e5ea;
-	color: black;
-	text-align: left;
+		background: #e5e5ea;
+		color: black;
+		text-align: left;
   }
+
+	.message-owner {
+		display: flex;
+	}
+
+	.message-owner span {
+		color: rgb(197, 204, 219);
+		font-size: 0.7rem;
+		margin: 0 .2rem;
+	}
 
   .message-text {
 	  display: flex;
