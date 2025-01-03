@@ -1,3 +1,5 @@
+`Currently under construction`
+
 # GunDB Chat Application
 
 This is a chat application built using [GunDB](https://gun.eco/), a graph database, with SEA (Security, Encryption, Authorization) for encryption. The UI is built using Svelte 5 without TypeScript.
